@@ -21,9 +21,11 @@ div[role="radiogroup"] label svg { display: none; }
 </style>
 """, unsafe_allow_html=True)
 
-DATA_PATH  = r"C:\Users\nour.bedoui\Desktop\Rakuten\data"
-LOGO_PATH  = r"C:\Users\nour.bedoui\Desktop\Rakuten\data\Rakuten_Global_Brand_Logo.svg.webp"
-TRAIN_PATH = r"C:\Users\nour.bedoui\Desktop\Rakuten\data\images\images\image_train"
+LOGO_PATH  = "Rakuten_Global_Brand_Logo.svg.webp"
+TRAIN_PATH = None
+
+X_TRAIN_ID = "1CGPG6QQJlYOBekvEHSoXMJO905h4S1iY"
+Y_TRAIN_ID = "1bGKl1RyzqIwE51dlmdwAiibnjRjiPmu5"
 
 CAT_NAMES = {
     10: "Livres occasion", 40: "Jeux vidéo consoles", 50: "Accessoires gaming",
@@ -39,10 +41,10 @@ CAT_NAMES = {
 
 @st.cache_data
 def load_data():
-    X_train = pd.read_csv(f"{DATA_PATH}/X_train_update.csv", index_col=0)
-    Y_train = pd.read_csv(f"{DATA_PATH}/Y_train_CVw08PX.csv", index_col=0)
+    X_train = pd.read_csv(f"https://drive.google.com/uc?export=download&id={X_TRAIN_ID}", index_col=0)
+    Y_train = pd.read_csv(f"https://drive.google.com/uc?export=download&id={Y_TRAIN_ID}", index_col=0)
     df = pd.concat([X_train, Y_train], axis=1)
-    df["label"] = df["prdtypecode"].map(CAT_NAMES)
+    df["label"] = df["prdtypecode"].apply(lambda x: CAT_NAMES.get(x, ""))
 
     stop_fr     = set(stopwords.words("french"))
     stop_en     = set(stopwords.words("english"))
@@ -67,7 +69,7 @@ def load_data():
 @st.cache_data
 def load_quality():
     try:
-        return pd.read_csv(f"{DATA_PATH}/quality_df.csv")
+        return pd.read_csv("quality_df.csv")
     except:
         return None
 
