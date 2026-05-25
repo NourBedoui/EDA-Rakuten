@@ -138,7 +138,7 @@ if section == "Vue d'ensemble":
 
     st.dataframe(t1.style
         .format({"% manquant": "{:.1f}%", "Valeurs renseignées": "{:,}", "Valeurs manquantes": "{:,}"})
-        .applymap(color_statut, subset=["Statut"]),
+        .map(color_statut, subset=["Statut"]),
         use_container_width=True)
 
     st.markdown("---")
